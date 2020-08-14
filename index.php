@@ -1,29 +1,38 @@
 <?php
-    $example = '51';
+    $example = 20;
 
-    function getKata($number){
-        $pivot = '';
-        return $pivot . getRemain($number);
-    }
-
+   
     function getRemain($number){
         $determinant = ['x', 'y', 'puluh ', 'ratus ', 'ribu '];
         $pivot = '';
         $level = strlen($number);
-        
-        if ($level == 0) {
-            // $pivot = $pivot . '';
-            return;
-        }elseif ($level == 1) {
-            $pivot = $pivot . getWords($number);
-            return $pivot;
-        }elseif ($level > 1) {
-            $pivot = $pivot . getWords($number[0]) . $determinant[$level];
-            // $number = substr($number, 1);
-            getRemain(substr($number, 1));
-        }
 
-        $level -= 1;
+        for ($i = $level; $i >= 0 ; $i--) {
+            // $pivot2 = ''; 
+            if ($level == 2 && $number == 10){
+                $pivot = $pivot . "sepuluh ";
+                $level = $level-1;
+            }elseif ($level == 2 && $number < 20){
+                $convertNumber = strval($number);
+                if ($convertNumber[1] == '1'){
+                    $pivot = $pivot . "sebelas ";
+                    $level = $level-1;
+                }else {
+                    $pivot = $pivot . getWords($convertNumber[1]) . 'belas';
+                    $level = $level-1;
+                }
+            } else {
+                $convertNumber = strval($number);
+                // return $convertNumber[0];
+                $pivot = $pivot . getWords($convertNumber[0]) . $determinant[$level];
+                $number = substr($convertNumber, 1);
+                $number = intval($number);
+                $level = $level-1;
+            }
+        }
+        
+        
+    
         return $pivot;
     }
 
@@ -42,6 +51,6 @@
         return $wordsContainer[$number];
     }
 
-    echo getKata($example);
+    echo getRemain($example);
 
 ?>
